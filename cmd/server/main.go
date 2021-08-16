@@ -9,12 +9,14 @@ import (
 	"github.com/bestpilotingalaxy/fbs-test-case/config"
 	"github.com/bestpilotingalaxy/fbs-test-case/internal/api/protobuff"
 	"github.com/bestpilotingalaxy/fbs-test-case/internal/api/restful"
+	"github.com/bestpilotingalaxy/fbs-test-case/internal/redis"
 )
 
 func main() {
 	cfg := config.New()
 	config.SetupLogger(cfg.LogLevel)
 
+	redis.Client = redis.New(&cfg.Redis)
 	api := restful.NewRouter(&cfg.RESTServer)
 	go api.RunAPI()
 

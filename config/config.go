@@ -24,6 +24,7 @@ type GRPCServer struct {
 
 // Redis ...
 type Redis struct {
+	Name    string `env:"REDIS_NAME"`
 	Port    string `env:"REDIS_PORT"`
 	SetName string `env:"REDIS_SETNAME"`
 }
@@ -32,6 +33,9 @@ type Redis struct {
 type Config struct {
 	RESTServer
 	GRPCServer
+
+	Redis
+
 	LogLevel string `env:"LOG_LEVEL"`
 }
 

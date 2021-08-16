@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+
+  redis:
+    image: redis:latest
+    container_name: ${REDIS_NAME}
+    environment: 
+      - TZ=${TZ}
+    restart: always
+    ports:
+      - ${REDIS_PORT}:6379
+
+  apiserver:
+    build: .
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+      - ${GRPC_SERVER_PORT}:${GRPC_SERVER_PORT}
+    depends_on:
+      - redis
