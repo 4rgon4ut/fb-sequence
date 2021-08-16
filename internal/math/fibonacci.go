@@ -1,14 +1,13 @@
 package math
 
 import (
-	"fmt"
-	"math"
 	"math/big"
 )
 
 // FibonacciBig ...
-func FibonacciBig(start uint64, end uint64) map[uint64]string {
+func FibonacciBig(start uint64, end uint64) (map[uint64]string, map[uint64]string) {
 	result := make(map[uint64]string)
+	sequenceToCache := make(map[uint64]string)
 	if end <= 1 {
 		result[end] = big.NewInt(int64(end)).String()
 	}
@@ -20,19 +19,8 @@ func FibonacciBig(start uint64, end uint64) map[uint64]string {
 		if i >= start {
 			result[i] = n1.String()
 		}
+		sequenceToCache[i] = n1.String()
 	}
-	return result
-}
 
-// FibBinet ...
-func FibBinet(start int, end int) map[int]string {
-	result := make(map[int]string)
-	for start := start; start <= end; start++ {
-		g := (1 + math.Sqrt(5)) / 2
-		ret := (math.Pow(g, float64(start)) - math.Pow(1-g, float64(start))) / math.Sqrt(5)
-		r := big.NewFloat(ret)
-		num, _ := r.Uint64()
-		result[start] = fmt.Sprint(num)
-	}
-	return result
+	return result, sequenceToCache
 }

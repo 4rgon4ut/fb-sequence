@@ -1,13 +1,10 @@
 package rest
 
 import (
-	"fmt"
-
 	"github.com/bestpilotingalaxy/fbs-test-case/internal/math"
 	"github.com/bestpilotingalaxy/fbs-test-case/internal/redis"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"
-	log "github.com/sirupsen/logrus"
 )
 
 // FibonacciSliceHandler ...
@@ -24,18 +21,11 @@ func FibonacciSliceHandler(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Invalid range")
 	}
 
-	cachedSequence, err := redis.Client.ZRangeByScore(fmt.Sprint(start), fmt.Sprint(end))
+	res, err := redis.GetFromCache(start, end)
 	if err != nil {
-		log.Error(err)
+		calculatedRes, toCache := math.FibonacciBig(start, end)
+		go redis.Client.ZAddNXMany(toCache)
+		return c.JSON(calculatedRes)
 	}
-	if len(cachedSequence) == int(end-start+1) {
-		log.Debug("Cache hit")
-		res := formatRedisRecordsToPayload(cachedSequence)
-		return c.JSON(res)
-
-	}
-	res := math.FibonacciBig(start, end)
-	go redis.Client.ZAddNXMany(res)
-
 	return c.JSON(res)
 }

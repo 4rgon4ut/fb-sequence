@@ -7,6 +7,7 @@ import (
 
 	"github.com/bestpilotingalaxy/fbs-test-case/config"
 	"github.com/bestpilotingalaxy/fbs-test-case/internal/math"
+	"github.com/bestpilotingalaxy/fbs-test-case/internal/redis"
 	fib_proto "github.com/bestpilotingalaxy/fbs-test-case/proto"
 	"google.golang.org/grpc"
 )
@@ -40,6 +41,11 @@ func RunServer(s *grpc.Server, port string) {
 
 // GetFibonacciSlice ...
 func (s *FibonaciServer) GetFibonacciSlice(ctx context.Context, r *fib_proto.FibRequest) (*fib_proto.FibResponse, error) {
-	result := math.FibonacciBig(r.Start, r.End)
-	return &fib_proto.FibResponse{Result: result}, nil
+	res, err := redis.GetFromCache(r.Start, r.End)
+	if err != nil {
+		calculatedRes, toCache := math.FibonacciBig(r.Start, r.End)
+		go redis.Client.ZAddNXMany(toCache)
+		return &fib_proto.FibResponse{Result: calculatedRes}, nil
+	}
+	return &fib_proto.FibResponse{Result: res}, nil
 }
