@@ -1,4 +1,4 @@
-package restful
+package rest
 
 import (
 	log "github.com/sirupsen/logrus"

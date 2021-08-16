@@ -1,7 +1,17 @@
+# Installation
+
+    git clone https://github.com/bestpilotingalaxy/fb-sequence.git
+#
+    
+    docker-compose up
+
+# Project layout
+![image](https://user-images.githubusercontent.com/59182467/129530759-976a3279-fcf8-44b7-95c5-4d9373d9139a.png)
+
+
 
 # Debug
 
-I'm personally use VSCode with dlv-dap debugger
 * https://github.com/golang/vscode-go/blob/master/docs/dlv-dap.md
 
 
