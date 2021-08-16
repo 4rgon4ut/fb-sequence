@@ -1,4 +1,4 @@
-package api
+package restful
 
 import (
 	log "github.com/sirupsen/logrus"
@@ -28,7 +28,7 @@ func NewRouter(c *config.Server) *Router {
 		TimeFormat: "02-Jan-2006",
 		TimeZone:   "Europe/Moscow",
 	}))
-
+	AddRoutes(app)
 	return &Router{
 		app,
 		c,
@@ -40,4 +40,9 @@ func (r *Router) RunAPI() {
 	if err := r.Listen("0.0.0.0:" + r.Config.Port); err != nil {
 		log.Fatalf("cant Start server due: %s", err)
 	}
+}
+
+// AddRoutes ...
+func AddRoutes(app *fiber.App) {
+	app.Get("/fibonacci", FibonacciSliceHandler)
 }

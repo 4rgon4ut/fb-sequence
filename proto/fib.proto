@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+
+package fib_proto;
+
+option go_package = "proto/fib.proto";
+
+service Fibonnaci {
+    rpc GetFibonacciSlice (FibRequest) returns (FibResponse) {}
+}
+
+message FibRequest {
+    uint64 start = 1;
+    uint64 end = 2;
+}
+
+message FibResponse {
+    map<uint64,string> result = 1;
+}

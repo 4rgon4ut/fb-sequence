@@ -17,6 +17,12 @@ type Server struct {
 	Port string `env:"SERVER_PORT"`
 }
 
+// Redis ...
+type Redis struct {
+	Port    string `env:"REDIS_PORT"`
+	SetName string `env:"REDIS_SETNAME"`
+}
+
 // Config global config struct
 type Config struct {
 	Server
