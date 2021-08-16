@@ -12,9 +12,14 @@ import (
 
 var once sync.Once
 
-// Server configuration
-type Server struct {
+// RESTServer configuration
+type RESTServer struct {
 	Port string `env:"SERVER_PORT"`
+}
+
+// GRPCServer ...
+type GRPCServer struct {
+	Port string `env:"GRPC_SERVER_PORT"`
 }
 
 // Redis ...
@@ -25,7 +30,8 @@ type Redis struct {
 
 // Config global config struct
 type Config struct {
-	Server
+	RESTServer
+	GRPCServer
 	LogLevel string `env:"LOG_LEVEL"`
 }
 

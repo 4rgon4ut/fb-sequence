@@ -6,6 +6,7 @@ import (
 
 	"github.com/bestpilotingalaxy/fbs-test-case/config"
 	"github.com/go-redis/redis/v8"
+	log "github.com/sirupsen/logrus"
 )
 
 // Client ...
@@ -57,9 +58,20 @@ func (r *Redis) SET(key string, val string) error {
 	return nil
 }
 
-// // FindNearest ...
-// func (r *Redis) FindNearest(start string, end string) {
-// 	ctx, cancel := context.WithTimeout(r.Context, 10)
-// 	defer cancel()
-// 	err := r.Client.Sort().
-// }
+// ZADDNXMany ...
+func (r *Redis) ZADDNXMany(result map[uint64]string) error {
+	addSlice := make([]*redis.Z, 0)
+	for k, v := range result {
+		member := &redis.Z{Score: float64(k), Member: v}
+		addSlice = append(addSlice, member)
+	}
+	ctx, cancel := context.WithTimeout(r.Context, 10)
+	defer cancel()
+	err := r.Client.ZAddNX(ctx, r.Config.SetName, addSlice...).Err()
+	if err != nil {
+		err := fmt.Errorf("cant ZADDNX sequence to redis: %v", err)
+		log.Error(err.Error())
+		return err
+	}
+	return nil
+}

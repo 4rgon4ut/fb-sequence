@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 
+	"github.com/bestpilotingalaxy/fbs-test-case/config"
 	"github.com/bestpilotingalaxy/fbs-test-case/internal/math"
 	fib_proto "github.com/bestpilotingalaxy/fbs-test-case/proto"
 	"google.golang.org/grpc"
@@ -13,22 +14,25 @@ import (
 // FibonaciServer ...
 type FibonaciServer struct {
 	fib_proto.UnimplementedFibonnaciServer
+
+	Config *config.GRPCServer
 }
 
 // NewServer ...
-func NewServer() *grpc.Server {
+func NewServer(c *config.GRPCServer) *grpc.Server {
 	s := grpc.NewServer()
-	srv := &FibonaciServer{}
+	srv := &FibonaciServer{Config: c}
 	fib_proto.RegisterFibonnaciServer(s, srv)
 	return s
 }
 
 // RunServer ...
-func RunServer(s *grpc.Server) {
-	l, err := net.Listen("tcp", "0.0.0.0:8080")
+func RunServer(s *grpc.Server, port string) {
+	l, err := net.Listen("tcp", "0.0.0.0:"+port)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	if err := s.Serve(l); err != nil {
 		log.Fatal(err)
 	}

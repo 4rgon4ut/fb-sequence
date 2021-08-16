@@ -12,11 +12,11 @@ import (
 // Router ...
 type Router struct {
 	*fiber.App
-	Config *config.Server
+	Config *config.RESTServer
 }
 
 // NewRouter new fiber app with middlewares
-func NewRouter(c *config.Server) *Router {
+func NewRouter(c *config.RESTServer) *Router {
 	app := fiber.New()
 
 	// Default configuration fiber middlewares

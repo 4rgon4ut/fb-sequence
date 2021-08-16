@@ -24,36 +24,7 @@ func FibonacciBig(start uint64, end uint64) map[uint64]string {
 	return result
 }
 
-// Fibonacci ...
-func Fibonacci(n uint) map[uint]uint64 {
-	result := make(map[uint]uint64)
-	if n <= 1 {
-		result[n] = uint64(n)
-		return result
-	}
-
-	var n1, n2 uint64 = 0, 1
-
-	for i := uint(2); i <= n; i++ {
-		n1, n2 = n2, n1+n2
-		result[i] = n2
-	}
-
-	return result
-}
-
-// // FibGenerator ...
-// func FibGenerator(start *big.Int, end *big.Int) chan int {
-// 	c := make(chan *big.Int)
-
-// 	go func() {
-// 		for  ; i, j = i+j, i {
-// 			c <- i
-// 		}
-// 	}()
-
-// 	return c
-// }
+// FibBinet ...
 func FibBinet(start int, end int) map[int]string {
 	result := make(map[int]string)
 	for start := start; start <= end; start++ {
@@ -65,6 +36,3 @@ func FibBinet(start int, end int) map[int]string {
 	}
 	return result
 }
-
-// 	return
-// }
